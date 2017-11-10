@@ -33,8 +33,8 @@ class DiceSet
         fc_count_hash[key] -= 3
       end
 
-    total_sc += 100 * fc_count_hash[key] if key == 1
-    total_sc += 50 * fc_count_hash[key] if key == 5
+      total_sc += 100 * fc_count_hash[key] if key == 1
+      total_sc += 50 * fc_count_hash[key] if key == 5
     }
     
     total_sc
