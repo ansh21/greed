@@ -2,11 +2,11 @@ require_relative 'diceset'
 require_relative 'player'
 
 class Main
-  attr_reader :players, :diceset
+  attr_reader :players, :diceset, :player_count
 
   def initialize(player_count_val)
-    player_count=player_count_val.to_i
-    if player_count <= 1
+    @player_count=player_count_val.to_i
+    if @player_count <= 1
       puts "Number of players must be >= 1"
       exit
     end
@@ -15,7 +15,7 @@ class Main
     @diceset = DiceSet.new
 
     i = 1
-    player_count.times {
+    @player_count.times {
       player = Player.new(i)
       @players << player
       i += 1
@@ -56,15 +56,23 @@ class Main
   #main process
   def process
     stop_id = -1
+    turn_count=0
     catch :stop_game do
       loop do
         @players.each do |player|
           throw :stop_game if player.id == stop_id
 
+          pc = @player_count
+          if turn_count % pc == 0
+            tc = (turn_count/pc) + 1
+            puts "\nTurn #{tc}\n"
+          end
+
           player.process_turn(@diceset)
 
           stop_id = process_last_round(stop_id, player)
           output_player_ts
+          turn_count += 1
         end
       end
     end
